@@ -1,0 +1,284 @@
+{% extends "first.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#4d4d7b;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.dashboard-container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding:30px;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.top-bar h1{
+    color:#4d4d7b;
+}
+
+.top-buttons a{
+    text-decoration:none;
+}
+
+.top-buttons button{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    background:#4d4d7b;
+    color:white;
+    cursor:pointer;
+    margin-left:10px;
+    font-size:15px;
+}
+
+.top-buttons button:hover{
+    background:#34345c;
+}
+
+.notes-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.note-card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.note-card:hover{
+    transform:translateY(-5px);
+}
+
+.note-card h3{
+    color:#4d4d7b;
+    margin-bottom:20px;
+}
+
+.actions{
+    display:flex;
+    justify-content:space-between;
+}
+
+.actions a{
+    text-decoration:none;
+    flex:1;
+    margin:5px;
+}
+
+.actions button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.read-btn{
+    background:#4d4d7b;
+}
+
+.update-btn{
+    background:#4d4d7b;
+}
+
+.delete-btn{
+    background:#4d4d7b;
+}
+
+.read-btn:hover{
+    background:#4d4d7b;
+}
+
+.update-btn:hover{
+    background:#4d4d7b;
+}
+
+.delete-btn:hover{
+    background:#4d4d7b;
+}
+
+.display-box{
+    margin-top:40px;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0px 4px 15px rgba(0,0,0,0.1);
+}
+
+.display-box h2{
+    color:#4d4d7b;
+    margin-bottom:20px;
+}
+
+textarea{
+    width:100%;
+    min-height:250px;
+    padding:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    resize:none;
+    font-size:15px;
+}
+
+.update-submit{
+    margin-top:15px;
+    padding:12px 20px;
+    border:none;
+    border-radius:8px;
+    background:#4d4d7b;
+    color:white;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.update-submit:hover{
+    background:#34345c;
+}
+
+.empty-notes{
+    text-align:center;
+    color:gray;
+    margin-top:50px;
+    font-size:20px;
+}
+
+</style>
+
+<div class="dashboard-container">
+
+    <div class="top-bar">
+
+        <h1>
+            Welcome {{profile_name}}
+        </h1>
+
+        <div class="top-buttons">
+
+            <a href="/notes_form">
+                <button>Add Notes</button>
+            </a>
+
+            <a href="/logout">
+                <button>Logout</button>
+            </a>
+
+        </div>
+
+    </div>
+
+    {% if notes %}
+
+    <div class="notes-grid">
+
+        {% for i in notes %}
+
+        <div class="note-card">
+
+            <h3>{{i[0]}}</h3>
+
+            <div class="actions">
+
+                <a href="/dashboard/{{i[0]}}/read">
+
+                    <button class="read-btn">
+                        Read
+                    </button>
+
+                </a>
+
+                <a href="/dashboard/{{i[0]}}/update">
+
+                    <button class="update-btn">
+                        Update
+                    </button>
+
+                </a>
+
+                <a href="/dashboard/{{i[0]}}/delete">
+
+                    <button class="delete-btn">
+                        Delete
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+        <div class="empty-notes">
+            No Notes Available
+        </div>
+
+    {% endif %}
+
+    {% if s_mode=="read" %}
+
+    <div class="display-box">
+
+        <h2>{{title}}</h2>
+
+        <textarea readonly>
+{{notes_info}}
+        </textarea>
+
+    </div>
+
+    {% endif %}
+
+    {% if s_mode=="update" %}
+
+    <div class="display-box">
+
+        <h2>Update : {{title}}</h2>
+
+        <form action="/update_notes" method="post">
+
+            <input type="hidden"
+                   name="title"
+                   value="{{title}}">
+
+            <textarea name="notes_update">
+{{notes_info}}
+            </textarea>
+
+            <br>
+
+            <input type="submit"
+                   value="Update Notes"
+                   class="update-submit">
+
+        </form>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

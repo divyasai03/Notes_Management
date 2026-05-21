@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Notes App{% endblock %}</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4d4d7b, #4d4d7b, #4d4d7b);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #2c1a4d;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            color: #d8b4fe;
+        }
+
+        .navbar a {
+            color: #eee;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #d8b4fe;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 90%;
+            margin: 40px  auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #8a2be2;
+            box-shadow: 0 0 5px rgba(138,43,226,0.5);
+        }
+
+        input[type="submit"], button {
+            background: linear-gradient(to right, #8a2be2, #c471ed);
+            border: none;
+            padding: 12px 20px;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background: linear-gradient(to right, #6a0dad, #a855f7);
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h1>Notes Manager</h1>
+        <div>
+           
+            <a href="/logout" >logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Notes App | Flask Project</p>
+    </div>
+
+</body>
+</html>
