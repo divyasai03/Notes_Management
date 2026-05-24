@@ -99,7 +99,7 @@ pypdfium2==5.8.0
 python-dateutil==2.9.0.post0
 python-discovery==1.2.2
 python-json-logger==4.1.0
-pywinpty==3.0.3
+pywinpty==3.0.3; sys_platform == 'win32'
 PyYAML==6.0.3
 pyzmq==27.1.0
 referencing==0.37.0
