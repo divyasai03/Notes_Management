@@ -1,16 +1,19 @@
 from flask import Flask, render_template, redirect, url_for, session, request
 import sqlite3
+import os  # <-- Added for absolute path handling
 from werkzeug.security import generate_password_hash, check_password_hash
 
 n = Flask(__name__)
 n.secret_key = "my secrat key"
-DB_NAME = "notes_management.db"
+
+# --- FIX 1: Enforce Absolute Path so your script and terminal look at the exact same file ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_NAME = os.path.join(BASE_DIR, "notes_management.db")
 
 def init_db():
     """Initializes the SQLite database and creates tables if they don't exist."""
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
-        # Create user_data table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS user_data (
                 username TEXT PRIMARY KEY,
@@ -18,7 +21,6 @@ def init_db():
                 profile_name TEXT NOT NULL UNIQUE
             )
         """)
-        # Create notes table
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS notes (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +32,6 @@ def init_db():
         """)
         conn.commit()
 
-# Run database setup on app startup
 init_db()
 
 @n.route("/")
@@ -171,7 +172,11 @@ def update_notes():
             cursr.execute("UPDATE notes SET notes=? WHERE username=? AND title=?;", (u_notes, username, title))
             conn.commit()
             
-        return redirect(url_for("dashboard"))
+            # 👇 DEBUG PRINT: Confirms exactly what data was written to the file
+            print(f"\n[DB UPDATE SUCCESS] Title: '{title}' updated with new text: '{u_notes}'\n")
+            
+        # --- FIX 2: Redirect back to the READ view of that specific note so changes display immediately ---
+        return redirect(url_for("dashboard", title=title, mode="read"))
 
 @n.route("/logout")
 def logout():
@@ -183,4 +188,7 @@ def logout():
 
 if __name__ == "__main__":
     init_db()
+    print("\n==================================================")
+    print(f"👉 OPEN THIS DATABASE FILE: {DB_NAME}")
+    print("==================================================\n")
     n.run(debug=True)
