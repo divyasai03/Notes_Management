@@ -182,4 +182,5 @@ def logout():
     return redirect(url_for("welcome"))
 
 if __name__ == "__main__":
+    init_db()
     n.run(debug=True)
